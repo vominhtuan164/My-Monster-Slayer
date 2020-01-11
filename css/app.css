@@ -10,6 +10,11 @@
     transition: width 500ms;
 }
 
+.avatar {
+    width: 100%;
+    height: 500px;
+}
+
 .controls, .log {
     margin-top: 30px;
     text-align: center;
