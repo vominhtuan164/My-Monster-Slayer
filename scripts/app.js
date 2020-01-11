@@ -4,19 +4,26 @@ new Vue({
         playerHealth: 100,
         monsterHealth: 100,
         gameIsRunning: false,
+        turns: []
     },
     methods: {
         startGame: function(){
             this.gameIsRunning = true;
             this.playerHealth = 100;
             this.monsterHealth = 100;
+            this.turns = [];
         },
         attack: function (){
             this.heroAttack();
             this.monsterAttack();
         },
         specialAttack: function() {
-            this.monsterHealth -= this.calculateDamage(25, 10);
+            let damage = this.calculateDamage(25, 10);
+            this.monsterHealth -= damage;
+            this.turns.unshift({
+                isPlayer: true,
+                text: 'Player hits Monster hard for ' + damage,
+            });
             if (this.checkWin()) {
                 return;
             }
@@ -28,17 +35,31 @@ new Vue({
             } else {
                 this.playerHealth = 100;
             }
+            this.turns.unshift({
+                isPlayer: true,
+                text: 'Player heals for 10',
+            });
             this.monsterAttack();
         },
         giveUp: function() {
             this.gameIsRunning = false;
         },
         monsterAttack: function() {
-            this.playerHealth -= this.calculateDamage(15, 5);
+            let damage = this.calculateDamage(15, 5);
+            this.playerHealth -= damage;
+            this.turns.unshift({
+                isPlayer: false,
+                text: 'Monster hits Player for ' + damage,
+            });
             this.checkWin()
         },
         heroAttack: function() {
-            this.monsterHealth -= this.calculateDamage(10, 3);
+            let damage = this.calculateDamage(10, 3);
+            this.monsterHealth -= damage;
+            this.turns.unshift({
+                isPlayer: true,
+                text: 'Player hits Monster for ' + damage,
+            });
             if (this.checkWin()) {
                 return;
             }
